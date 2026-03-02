@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- Mobile / iPad Optimization -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Math Explorer">
+  <meta name="theme-color" content="#6c5ce7">
+
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1055/1055687.png">
+
+  <title>Math Explorer</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f0f4ff;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 15px 25px;
+      font-size: 1.2rem;
+      border-radius: 15px;
+      border: none;
+      margin: 10px;
+      background: #6c5ce7;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .question {
+      font-size: 3rem;
+      margin: 30px 0;
+    }
+
+    input {
+      font-size: 2rem;
+      padding: 10px;
+      width: 120px;
+      text-align: center;
+      border-radius: 10px;
+      border: 2px solid #6c5ce7;
+    }
+
+    .feedback {
+      font-size: 1.5rem;
+      margin-top: 20px;
+      height: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🧮 Math Explorer</h1>
+
+<div id="home">
+  <button onclick="start('add')">Addition</button>
+  <button onclick="start('sub')">Subtraction</button>
+  <button onclick="start('mul')">Multiplication</button>
+</div>
+
+<div id="quiz" style="display:none;">
+  <div class="question" id="question"></div>
+  <input id="answer" type="number" />
+  <br>
+  <button onclick="check()">Check</button>
+  <div class="feedback" id="feedback"></div>
+  <br>
+  <button onclick="goHome()">Home</button>
+</div>
+
+<script>
+let op = "add";
+let a, b, correct;
+
+function rand(max){
+  return Math.floor(Math.random() * max) + 1;
+}
+
+function start(operation){
+  op = operation;
+  document.getElementById("home").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
+  next();
+}
+
+function next(){
+  a = rand(20);
+  b = rand(20);
+
+  if(op === "add") correct = a + b;
+  if(op === "sub") {
+    if(b > a){ let temp = a; a = b; b = temp; }
+    correct = a - b;
+  }
+  if(op === "mul") correct = a * b;
+
+  document.getElementById("question").innerHTML = `${a} ${symbol()} ${b} = ?`;
+  document.getElementById("answer").value = "";
+  document.getElementById("feedback").innerHTML = "";
+}
+
+function symbol(){
+  if(op === "add") return "+";
+  if(op === "sub") return "-";
+  if(op === "mul") return "×";
+}
+
+function check(){
+  let val = Number(document.getElementById("answer").value);
+  if(val === correct){
+    document.getElementById("feedback").innerHTML = "Correct! 🎉";
+    setTimeout(next, 1000);
+  } else {
+    document.getElementById("feedback").innerHTML = "Wrong. Answer is " + correct;
+  }
+}
+
+function goHome(){
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("home").style.display = "block";
+}
+</script>
+
+</body>
+</html>
